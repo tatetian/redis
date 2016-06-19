@@ -1321,6 +1321,11 @@ int rewriteAppendOnlyFileBackground(void) {
 }
 
 void bgrewriteaofCommand(redisClient *c) {
+    // [tatetian]
+    // Disable background append-only rewriting since it requires fork(),
+    // which is not supported in enclave
+    addReplyError(c, "Background append only file rewriting is disabled");
+#if 0
     if (server.aof_child_pid != -1) {
         addReplyError(c,"Background append only file rewriting already in progress");
     } else if (server.rdb_child_pid != -1) {
@@ -1331,6 +1336,7 @@ void bgrewriteaofCommand(redisClient *c) {
     } else {
         addReply(c,shared.err);
     }
+#endif
 }
 
 void aofRemoveTempFile(pid_t childpid) {

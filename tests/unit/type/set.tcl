@@ -66,6 +66,7 @@ start_server {
         assert_equal [lsort {A a b c B}] [lsort [r smembers myset]]
     }
 
+    if 0 {
     test "Set encoding after DEBUG RELOAD" {
         r del myintset myhashset mylargeintset
         for {set i 0} {$i <  100} {incr i} { r sadd myintset $i }
@@ -79,6 +80,7 @@ start_server {
         assert_encoding intset myintset
         assert_encoding hashtable mylargeintset
         assert_encoding hashtable myhashset
+    }
     }
 
     test {SREM basics - regular set} {
@@ -156,12 +158,14 @@ start_server {
             assert_equal [list 195 196 197 198 199 $large] [lsort [r smembers setres]]
         }
 
+        if 0 {
         test "SINTERSTORE with two sets, after a DEBUG RELOAD - $type" {
             r debug reload
             r sinterstore setres set1 set2
             assert_encoding $type setres
             assert_equal [list 195 196 197 198 199 $large] [lsort [r smembers setres]]
         }
+    }
 
         test "SUNION with two sets - $type" {
             set expected [lsort -uniq "[r smembers set1] [r smembers set2]"]

@@ -389,6 +389,7 @@ start_server {tags {"scripting"}} {
         r get x
     } {10000}
 
+    if 0 {
     test {EVAL processes writes from AOF in read-only slaves} {
         r flushall
         r config set appendonly yes
@@ -407,6 +408,7 @@ start_server {tags {"scripting"}} {
         r slaveof no one
         set res
     } {102}
+    }
 
     test {We can call scripts rewriting client->argv from Lua} {
         r del myset
@@ -512,6 +514,7 @@ start_server {tags {"scripting"}} {
     }
 }
 
+if 0 {
 start_server {tags {"scripting repl"}} {
     start_server {} {
         test {Before the slave connects we issue two EVAL commands} {
@@ -603,4 +606,5 @@ start_server {tags {"scripting repl"}} {
             }
         }
     }
+}
 }

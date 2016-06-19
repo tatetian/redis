@@ -640,6 +640,7 @@ start_server {tags {"zset"}} {
             }
         }
 
+        if 0 {
         test "ZSCORE after a DEBUG RELOAD - $encoding" {
             r del zscoretest
             set aux {}
@@ -654,6 +655,7 @@ start_server {tags {"zset"}} {
             for {set i 0} {$i < $elements} {incr i} {
                 assert_equal [lindex $aux $i] [r zscore zscoretest $i]
             }
+        }
         }
 
         test "ZSET sorting stresser - $encoding" {

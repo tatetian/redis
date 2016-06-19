@@ -1534,6 +1534,11 @@ void saveCommand(redisClient *c) {
 }
 
 void bgsaveCommand(redisClient *c) {
+    // [tatetian]
+    // Background save is disabled since it requires fork(), which is
+    // currently not supported in enclave
+    addReplyError(c, "Background save already in progress");
+#if 0
     if (server.rdb_child_pid != -1) {
         addReplyError(c,"Background save already in progress");
     } else if (server.aof_child_pid != -1) {
@@ -1543,4 +1548,5 @@ void bgsaveCommand(redisClient *c) {
     } else {
         addReply(c,shared.err);
     }
+#endif
 }

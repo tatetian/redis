@@ -3581,6 +3581,13 @@ int main(int argc, char **argv) {
     gettimeofday(&tv,NULL);
     dictSetHashFunctionSeed(tv.tv_sec^tv.tv_usec^getpid());
     server.sentinel_mode = checkForSentinelMode(argc,argv);
+    // [tatetian]
+    // Sentinel mode is disabled since it requires fork(), which is not
+    // supported in enclave
+    if (server.sentinel_mode) {
+	redisLog(REDIS_WARNING, "Sentinel mode is disabled. Exiting...");
+	exit(1);
+    }
     initServerConfig();
 
     /* We need to init sentinel right now as parsing the configuration file
@@ -3646,7 +3653,13 @@ int main(int argc, char **argv) {
     } else {
         redisLog(REDIS_WARNING, "Warning: no config file specified, using the default config. In order to specify a config file use %s /path/to/%s.conf", argv[0], server.sentinel_mode ? "sentinel" : "redis");
     }
-    if (server.daemonize) daemonize();
+    if (server.daemonize) {
+	// [tatetian]
+	// Daemonizing is disabled since it requires fork(), which is not
+	// supported in enclave
+	redisLog(REDIS_WARNING, "Daemonizing is disabled. Exiting...");
+	exit(1);
+    }
     initServer();
     if (server.daemonize) createPidFile();
     redisSetProcTitle(argv[0]);

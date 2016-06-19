@@ -38,6 +38,7 @@ start_server {tags {"other"}} {
         }
     }
 
+    if 0 {
     test {BGSAVE} {
         waitForBgsave r
         r flushdb
@@ -48,12 +49,14 @@ start_server {tags {"other"}} {
         r debug reload
         r get x
     } {10}
+    }
 
     test {SELECT an out of range DB} {
         catch {r select 1000000} err
         set _ $err
     } {*invalid*}
 
+    if 0 {
     tags {consistency} {
         if {![catch {package require sha1}]} {
             if {$::accurate} {set numops 10000} else {set numops 1000}
@@ -82,6 +85,7 @@ start_server {tags {"other"}} {
                 }
             } {1}
 
+            if 0 {
             test {Same dataset digest if saving/reloading as AOF?} {
                 r bgrewriteaof
                 waitForBgrewriteaof r
@@ -104,9 +108,12 @@ start_server {tags {"other"}} {
                     set _ 0
                 }
             } {1}
+            }
         }
     }
+    }
 
+    if 0 {
     test {EXPIRES after a reload (snapshot + append only file rewrite)} {
         r flushdb
         r set x 10
@@ -122,7 +129,9 @@ start_server {tags {"other"}} {
         set e2 [expr {$ttl > 900 && $ttl <= 1000}]
         list $e1 $e2
     } {1 1}
+    }
 
+    if 0 {
     test {EXPIRES after AOF reload (without rewrite)} {
         r flushdb
         r config set appendonly yes
@@ -160,6 +169,7 @@ start_server {tags {"other"}} {
         set ttl [r ttl pz]
         assert {$ttl > 2900 && $ttl <= 3000}
         r config set appendonly no
+    }
     }
 
     tags {protocol} {
