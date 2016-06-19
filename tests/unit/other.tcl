@@ -204,8 +204,8 @@ start_server {tags {"other"}} {
     }
 
     test {APPEND basics} {
-        list [r append foo bar] [r get foo] \
-             [r append foo 100] [r get foo]
+        list [r append foooo bar] [r get foooo] \
+             [r append foooo 100] [r get foooo]
     } {3 bar 6 bar100}
 
     test {APPEND basics, integer encoded values} {
